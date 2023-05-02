@@ -1,5 +1,6 @@
 import React from "react"
 import { useNavigate } from "react-router-dom";
+import logo from "../Images/logoB.png"
 
 function Footer(){
     return(
@@ -109,9 +110,9 @@ function Footer(){
                     </div>
                 </div>
                 <div className="mb-6 md:mb-0">
-                    <a href="https://flowbite.com/" className="flex items-center">
-                        <span className="self-center text-2xl font-semibold whitespace-nowrap ">Hajur Ko Car Rental</span>
-                    </a>
+                    <div className="flex items-center">
+                        <span className="self-center text-2xl font-semibold whitespace-nowrap "><img src={logo} className="h-10"/></span>
+                    </div>
                 </div>
             </div>
             <hr className="my-6 border-gray-200 sm:mx-auto dark:border-gray-700 lg:my-8" />
