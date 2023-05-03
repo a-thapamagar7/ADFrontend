@@ -9,6 +9,9 @@ import CreateCar from './Components/CreateCar';
 import AdminOffers from './Components/AdminOffers';
 import CreateOffer from './Components/CreateOffer';
 import UserCars from './Components/UserCars';
+import Requests from './Components/Requests';
+import DamageRequest from './Components/DamageRequest';
+import UserRequest from './Components/UserRequest';
 
 function App() {
   return (
@@ -19,7 +22,10 @@ function App() {
         <Route path="/register" element={<Register />} />
         <Route path="/car" element={<Car />} />
         <Route path="/cars" element={<UserCars />} />
+        <Route path="/request" element={<Requests />} />
+        <Route path="/myrequests" element={<UserRequest />} />
         <Route path="/admin/cars" element={<AdminCars />} />
+        <Route path="/damage/:id" element={<DamageRequest />} />
         <Route path="/admin/cars/add/:id" element={<CreateCar />} />
         <Route path="/admin/cars/add" element={<CreateCar />} />
         <Route path="/admin/offers/add/:id" element={<CreateOffer />} />

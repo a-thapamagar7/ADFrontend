@@ -15,7 +15,7 @@ const CreateOffer = () => {
     const [type, setType] = useState("")
     const [value, setValue] = useState(0)
     const [offerDescription, setOfferDescription] = useState("")
-    const [createdBy] = useState("42f55ca4-e961-4994-a299-029ca9e74af9")
+    const [createdBy] = useState("5fdf4a8b-312b-4630-ade8-8f2a470d43bd")
     const [error, setError] = useState([])
 
     useEffect(() => {
@@ -38,20 +38,24 @@ const CreateOffer = () => {
         });
         
         const answer = await response.json();
-        const utcDateString = new Date(answer.startDate).toISOString();
-        const dateOnlyString = utcDateString.substring(0, 10);
-        const utcDateString2 = new Date(answer.endDate).toISOString();
-        const dateOnlyString2 = utcDateString2.substring(0, 10);
-        setStartDay(dateOnlyString)
-        setEndDay(dateOnlyString2)
-        setStartTime(utcToTime(answer.startDate))
-        setEndTime(utcToTime(answer.endDate))
-        setType(answer.type)
-        setValue(answer.value)
-        setOfferDescription(answer.offerDescription)
+        if(answer){
+            const utcDateString = new Date(answer.startDate).toISOString();
+            const dateOnlyString = utcDateString.substring(0, 10);
+            const utcDateString2 = new Date(answer.endDate).toISOString();
+            const dateOnlyString2 = utcDateString2.substring(0, 10);
+            setStartDay(dateOnlyString)
+            setEndDay(dateOnlyString2)
+            setStartTime(utcToTime(answer.startDate))
+            setEndTime(utcToTime(answer.endDate))
+            setType(answer.type)
+            setValue(answer.value)
+            setOfferDescription(answer.offerDescription)
+        }
+        
     }
 
     const editOffer = async (userId) => {
+        
         const datetime = new Date(Date.parse(`${startDay}T${startTime}:00.000Z`));
         const startDate = datetime.toISOString();
         const batetime = new Date(Date.parse(`${startDay}T${startTime}:00.000Z`));
@@ -62,6 +66,7 @@ const CreateOffer = () => {
                 'Content-Type': 'application/json'
             },
             body: JSON.stringify({
+                offerId: userId,
                 startDate,
                 endDate,
                 type,
@@ -85,36 +90,45 @@ const CreateOffer = () => {
     
 
     const createOffer = async () => {
+        
         const datetime = new Date(Date.parse(`${startDay}T${startTime}:00.000Z`));
         const startDate = datetime.toISOString();
         const batetime = new Date(Date.parse(`${startDay}T${startTime}:00.000Z`));
         const endDate = batetime.toISOString();
-        const response = await fetch("https://localhost:7256/api/Offer", {
-            method: "POST",
-            //sends the data in json format
-            headers: {
-                "Content-Type": "application/json"
-            },
-            //sends the states to the server
-            body: JSON.stringify({
-                startDate,
+        console.log(
+            startDate,
                 endDate,
                 type,
                 value,
                 offerDescription,
-                createdBy
-            })
-        })
+                createdBy)
+        // const response = await fetch("https://localhost:7256/api/Offer", {
+        //     method: "POST",
+        //     //sends the data in json format
+        //     headers: {
+        //         "Content-Type": "application/json"
+        //     },
+        //     //sends the states to the server
+        //     body: JSON.stringify({
+        //         offerId: 0,
+        //         startDate,
+        //         endDate,
+        //         type,
+        //         value,
+        //         offerDescription,
+        //         createdBy
+        //     })
+        // })
 
-        const data = await response.json()
-        if (data) {
-            navigate("/admin/offers")
-        } else {
-            const newError = { ...error }
-            newError.message = "The was an error"
-            newError.style = "text-red-700 text-lg"
-            setError(newError)
-        }
+        // const data = await response.json()
+        // if (data) {
+        //     navigate("/admin/offers")
+        // } else {
+        //     const newError = { ...error }
+        //     newError.message = "The was an error"
+        //     newError.style = "text-red-700 text-lg"
+        //     setError(newError)
+        // }
     }
 
 

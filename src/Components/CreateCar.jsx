@@ -7,15 +7,16 @@ const CreateCar = () => {
     const wrongError = "text-red-600 text-xs"
     const rightError = "text-green-600 text-xs"
     const navigate = useNavigate()
-    const {id} = useParams()
+    const { id } = useParams()
     const [carName, setCarName] = useState("")
     const [image, setImage] = useState("")
     const [brand, setBrand] = useState("")
     const [price, setPrice] = useState("")
     const [condition, setCondition] = useState("")
+    const [carStatus, setCarStatus] = useState("")
     const [description, setDescription] = useState("")
     const [numberOfRents, setNumberofRents] = useState("")
-    const [createdBy, setCreatedBy] = useState("42f55ca4-e961-4994-a299-029ca9e74af9")
+    const [createdBy, setCreatedBy] = useState("47d76d89-f8fc-42c0-bc0d-6e06048338c4")
     const [error, setError] = useState([])
 
     useEffect(() => {
@@ -24,6 +25,7 @@ const CreateCar = () => {
 
 
     const createCars = async () => {
+        let carId = 2
         const response = await fetch("https://localhost:7256/api/Car/Create", {
             method: "POST",
             //sends the data in json format
@@ -32,6 +34,8 @@ const CreateCar = () => {
             },
             //sends the states to the server
             body: JSON.stringify({
+                carId,
+                carStatus,
                 carName,
                 image,
                 brand,
@@ -42,10 +46,9 @@ const CreateCar = () => {
                 createdBy
             })
         })
-
-        
-
+        console.log(response)
         const data = await response.json()
+        console.log(data)
         if (data) {
 
             navigate("/admin/cars")
@@ -57,18 +60,21 @@ const CreateCar = () => {
         }
     }
     const editCar = async (userId) => {
+        const carId = id
         const response = await fetch(`https://localhost:7256/api/Car/${id}`, {
             method: 'PUT',
             headers: {
                 'Content-Type': 'application/json'
             },
             body: JSON.stringify({
+                carId,
                 carName,
                 image,
                 brand,
                 price,
                 condition,
                 description,
+                carStatus,
                 numberOfRents,
                 createdBy
             })
@@ -98,7 +104,6 @@ const CreateCar = () => {
         setCarName(answer.carName)
         setBrand(answer.brand)
         setCondition(answer.condition)
-        setCreatedBy(answer.createdBy)
         setDescription(answer.description)
         setImage(answer.image)
         setNumberofRents(answer.numberOfRents)
@@ -107,13 +112,13 @@ const CreateCar = () => {
 
     const submitCourse = (event) => {
         event.preventDefault()
-        if ( !id) {
+        if (!id) {
             createCars()
         }
         else {
             editCar()
         }
-       
+
     }
 
     return (
@@ -124,7 +129,7 @@ const CreateCar = () => {
                         <div className="bg-purple-200 w-fit">
                             <div style={{ marginTop: "-22px" }} className="basisblack flex flex-row text-gray-900 text-2xl tracking-tighter ">Add New Car</div>
                         </div>
-                        <img style={{ marginTop: "-30px" }} src={car} className="h-12 w-fit"/>
+                        <img style={{ marginTop: "-30px" }} src={car} className="h-12 w-fit" />
                     </div>
                     <div className="flex flex-col  gap-y-6">
                         <div className="grid basisregular grid-cols-12 items-center">
@@ -163,10 +168,10 @@ const CreateCar = () => {
                         </div>
 
                         <div className="flex flex-row gap-x-10">
-                            <button type="submit" className="border bg-indigo-600 text-white w-1/12 spacegrotesk h-12">{id? (<>Update</>):(<>Add</>)}</button>
-                            <button onClick={()=>navigate("/admin/cars")} className="border bg-indigo-600 text-white w-1/12 spacegrotesk h-12">Cancel</button>
+                            <button type="submit" className="border bg-indigo-600 text-white w-1/12 spacegrotesk h-12">{id ? (<>Update</>) : (<>Add</>)}</button>
+                            <button onClick={() => navigate("/admin/cars")} className="border bg-indigo-600 text-white w-1/12 spacegrotesk h-12">Cancel</button>
                         </div>
-                        
+
                         <div className={error.style}>{error.message}</div>
                     </div>
                 </form>
