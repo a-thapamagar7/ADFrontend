@@ -40,15 +40,23 @@ function Register() {
     })
 
     const data = await response.json();
-    console.log(data)
+    
     if (data.status = "Success") {
       toast.success(data.message);
+      setUsername("")
+      setEmail("")
+      setAddress("")
+      setCountry("")
+      setCity("")
+      setPostalCode("")
+      setPhone("")
+      setFile("")
+      setPassword("")
     }
     else {
       toast.error(data.message);
     }
 
-    console.log(data)
   }
   return (
     <div className="w-full">

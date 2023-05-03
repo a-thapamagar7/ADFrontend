@@ -1,9 +1,10 @@
+import { useNavigate } from "react-router-dom";
 import tripIMG from "../Images/ski-route.png"
 
-const ContentCard = ({name, image, trips, price, brand}) => {
-    
+const ContentCard = ({name, image, trips, price, brand, carId}) => {
+    const navigate = useNavigate("")
     return (
-        <div className="flex infoCard flex-col h-fit w-80 rounded-2xl shadow-2xl col-span-4">
+        <div onClick={()=>{navigate(`/car/${carId}`)}} className="flex infoCard flex-col h-fit w-80 rounded-2xl shadow-2xl col-span-4">
             <div className={"w-full h-40 overflow-hidden"}>
                 <img className="object-cover rounded-t-xl" src={image}/>
             </div>

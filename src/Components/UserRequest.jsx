@@ -7,7 +7,6 @@ import { useNavigate } from "react-router-dom";
 const UserRequest = () => {
 
     const [request, setRequest] = useState([])
-    const [userId, setUserId] = useState("d7ff7ebc-ede7-4ade-ac39-239af4f67bd9")
     const [startDate, setStartDate] = useState("")
     const [endDate, setEndDate] = useState("")
     const navigate = useNavigate("")
@@ -17,7 +16,7 @@ const UserRequest = () => {
     }, [])
 
     const getRequests = async () => {
-        const response = await fetch(`https://localhost:7256/api/RequestContoller/GetRequestByUser/${userId}`, {
+        const response = await fetch(`https://localhost:7256/api/RequestContoller/GetRequestByUser/${localStorage.getItem("userID")}`, {
             method: "GET",
             headers: {
                 "Content-Type": "application/json"

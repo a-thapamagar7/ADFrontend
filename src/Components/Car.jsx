@@ -2,32 +2,41 @@ import Car1 from '../Images/carIMG1.jpg';
 import { FaCar, FaGasPump, FaCogs, FaRoad } from 'react-icons/fa';
 import Footer from "./Footer";
 import { useEffect, useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import NavBar from "./navbar";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 
-function Car(e) {
+function Car(props) {
   const navigate = useNavigate()
-
+  const {id} = useParams();
   const [userid, setUserId] = useState("bc762d07-c09d-4ab7-adcd-1d981d49d83f")
   const [userName, setUserName] = useState("fa")
   const [startDate, setstartDate] = useState("")
   const [startTime, setstartTime] = useState("")
-  const [carID, setCarID] = useState("4")
+  const [carID, setCarID] = useState(id)
   const [carName, setCarName] = useState("")
+  const [description, setDescription] = useState("")
+  const [price, setPrice] = useState("")
+  const [brand, setBrand] = useState("")
+  const [numberOfRents, setNumberofRents] = useState("")
+  const [condition, setCondition] = useState("")
   const [staffName, setStaffName] = useState("")
   const [approvedBy, setApprovedBy] = useState("")
   const [status, setStatus] = useState("")
 
-  const requestCar = async (event) => {
+  useEffect(()=>{
+    getCar()
+  },[])
+
+  const requestCar = async(event) => {
+
+    
 
     event.preventDefault()
     const datetime = new Date(Date.parse(`${startDate}T${startTime}:00.000Z`));
     const requestedDate = datetime.toISOString();
-    console.log(userid,
-      requestedDate,
-      carID)
+  
     const response = await fetch("https://localhost:7256/api/RequestContoller", {
       method: "POST",
       //sends the data in json format
@@ -46,6 +55,8 @@ function Car(e) {
         status
       })
     })
+
+
     const data = await response.json();
     console.log(data)
     if (data) {
@@ -57,6 +68,27 @@ function Car(e) {
 
     console.log(data)
   }
+
+  const getCar = async() => {
+    const response = await fetch(`https://localhost:7256/api/Car/${id}`, {
+      method: "GET",
+      //sends the data in json format
+      headers: {
+        "Content-Type": "application/json"
+      },
+    })
+    console.log(answer)
+    const answer = response.json()
+    if(answer) {
+      setCarName(answer.carName)
+      setDescription(answer.description)
+      setCondition(answer.condition)
+      setNumberofRents(answer.numberOfRents)
+      setPrice(answer.price)
+      setBrand(answer.brand)
+    }
+  }
+
   return (
 
     <>
@@ -67,10 +99,11 @@ function Car(e) {
         </div>
         <div className="flex flex-row mt-12">
           <div className="w-1/2 px-4 mx-44">
-            <h1 className="text-4xl font-bold mb-4 F1-bold"> Toyota-Corolla</h1>
-            <span className="text-sm text-gray-500 font-thin ">Unlimited speed</span>
+            <h1 className="text-4xl font-bold mb-4 F1-bold"> {carName}</h1>
+            <span className="text-sm text-gray-500 font-thin ">{brand}</span>
+            <span className="text-sm text-gray-500 font-thin ">{numberOfRents}</span>
             <h3 className="text-xl font-semibold mb-2 mt-4">Description</h3>
-            <p className="text-lg font-thin text-justify ">Feel the power beneath your feet every time you accelerate a Toyota-Corolla. Whether it is a coupe, sedan or SUV, there is no shortage of phenomenal performance. Each Mercedes-Benz vehicle is built to exceed expectations. Experience a Mercedes-Benz and enjoy a ride like no other.</p>
+            <p className="text-lg font-thin text-justify ">{description}</p>
             <h3 className="text-xl font-semibold mb-2 mt-4">Features</h3>
             <div className="flex flex-row gap-x-10">
               <div className="w-1/2 text-left">
@@ -102,7 +135,7 @@ function Car(e) {
             </div>
           </div>
           <div className="w-1/2 px-4">
-            <h1 className="text-4xl font-bold mb-4">Rs 900 / day</h1>
+            <h1 className="text-4xl font-bold mb-4">Rs {props.price} / day</h1>
             <a href="/checkout">
               <span className="text-sm text-gray-500 font-thin border-b-2 border-gray-500 cursor-pointer mb-6"></span>
             </a>

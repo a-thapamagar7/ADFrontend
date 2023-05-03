@@ -15,7 +15,6 @@ const CreateOffer = () => {
     const [type, setType] = useState("")
     const [value, setValue] = useState(0)
     const [offerDescription, setOfferDescription] = useState("")
-    const [createdBy] = useState("5fdf4a8b-312b-4630-ade8-8f2a470d43bd")
     const [error, setError] = useState([])
 
     useEffect(() => {
@@ -55,7 +54,7 @@ const CreateOffer = () => {
     }
 
     const editOffer = async (userId) => {
-        
+        const createdBy = localStorage.getItem("userID")
         const datetime = new Date(Date.parse(`${startDay}T${startTime}:00.000Z`));
         const startDate = datetime.toISOString();
         const batetime = new Date(Date.parse(`${startDay}T${startTime}:00.000Z`));
@@ -90,45 +89,38 @@ const CreateOffer = () => {
     
 
     const createOffer = async () => {
-        
+        const createdBy = localStorage.getItem("userID")
         const datetime = new Date(Date.parse(`${startDay}T${startTime}:00.000Z`));
         const startDate = datetime.toISOString();
         const batetime = new Date(Date.parse(`${startDay}T${startTime}:00.000Z`));
         const endDate = batetime.toISOString();
-        console.log(
-            startDate,
+        const response = await fetch("https://localhost:7256/api/Offer", {
+            method: "POST",
+            //sends the data in json format
+            headers: {
+                "Content-Type": "application/json"
+            },
+            //sends the states to the server
+            body: JSON.stringify({
+                offerId: 0,
+                startDate,
                 endDate,
                 type,
                 value,
                 offerDescription,
-                createdBy)
-        // const response = await fetch("https://localhost:7256/api/Offer", {
-        //     method: "POST",
-        //     //sends the data in json format
-        //     headers: {
-        //         "Content-Type": "application/json"
-        //     },
-        //     //sends the states to the server
-        //     body: JSON.stringify({
-        //         offerId: 0,
-        //         startDate,
-        //         endDate,
-        //         type,
-        //         value,
-        //         offerDescription,
-        //         createdBy
-        //     })
-        // })
+                createdBy
+            })
+        })
 
-        // const data = await response.json()
-        // if (data) {
-        //     navigate("/admin/offers")
-        // } else {
-        //     const newError = { ...error }
-        //     newError.message = "The was an error"
-        //     newError.style = "text-red-700 text-lg"
-        //     setError(newError)
-        // }
+        const data = await response.json()
+        if (data) {
+            navigate("/admin/offers")
+        } else {
+            const newError = { ...error }
+            newError.message = "The was an error"
+            newError.style = "text-red-700 text-lg"
+            setError(newError)
+        }
     }
 
 

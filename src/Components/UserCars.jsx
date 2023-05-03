@@ -21,7 +21,6 @@ const UserCars = () => {
         });
 
         const answer = await response.json();
-        console.log(answer)
         setCar(answer)
     }
 
@@ -45,7 +44,7 @@ const UserCars = () => {
             <div className="grid grid-cols-12 px-20 gap-y-10">
                 {car.map((value, index)=>{
                     return(
-                        <ContentCard key={index} name={value.carName} brand={value.brand} image={value.image} trips={value.numberOfRents} price={value.price}/>
+                        <ContentCard carId={value.carId} key={index} name={value.carName} brand={value.brand} image={value.image} trips={value.numberOfRents} price={value.price}/>
                     )    
                 })}
 

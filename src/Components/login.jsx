@@ -29,8 +29,16 @@ function Login() {
     })
     console.log(response)
     const data = await response.json();
-    if(data.status = "Success")
+    if(data.role)
     {
+      localStorage.setItem("userID", data.userID)
+      localStorage.setItem("role", data.role)
+      if(data.role == "User"){
+        navigate("/")
+      }
+      else if(data.role){
+        navigate("/admin/cars")
+      }
       toast.error(data.message)
       
     }

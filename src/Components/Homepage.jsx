@@ -18,10 +18,25 @@ const Homepage = () => {
     const navigate = useNavigate()
     const [offer, setOffer] = useState([]);
     const [offerIndex, setOfferIndex] = useState(0);
+    const [car, setCar] = useState([])
 
     useEffect(() =>{
         getOffers()
+        getCars()
     })
+
+    const getCars = async () => {
+        const response = await fetch("https://localhost:7256/api/Car/GetAllCars", {
+            method: "GET",
+            headers: {
+                "Content-Type": "application/json"
+            }
+        });
+
+        const answer = await response.json();
+        answer.splice(3)
+        setCar(answer)
+    }
 
     const getOffers = async () => {
         const response = await fetch("https://localhost:7256/api/Offer", {
@@ -91,10 +106,13 @@ const Homepage = () => {
 
                     </div>
                     <div className="grid grid-cols-12 gap-x-10">
-                        <ContentCard image={car1} name={"Jeep Wrangler 2015"} trips={"17 trips"} price={"450"} />
-                        <ContentCard image={car2} name={"Car Model 2010"} trips={"17 trips"} price={"450"} />
-                        <ContentCard image={car3} name={"Honda Maruti 2016"} trips={"17 trips"} price={"450"} />
+                    {car.map((value, index)=>{
+                    return(
+                        <ContentCard carId={value.carId}  key={index} name={value.carName} brand={value.brand} image={value.image} trips={value.numberOfRents} price={value.price}/>
+                    )    
+                })}
                     </div>
+                        
 
                 </div>
                 <div className="flex flex-row items-center justify-center mt-28 h-80 w-full gap-x-20" style={{ backgroundColor: "#fbf9f6" }}>
